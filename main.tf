@@ -1,18 +1,18 @@
-resource "null_resource" "example1" {
+resource "null_resource" "script-runner" {
   provisioner "local-exec" {
-    command = "./scripts/icd.sh ${ibm_database.redis.id}"
+    command = "./scripts/icd.sh ${ibm_database.redis.id} ${var.secrets_manager_url} ${ibm_database.redis.name}"
   }
-  depends_on = [ibm_resource_key.cmcred]
+  depends_on = [ibm_database.redis]
 }
 ##############################################################################
 #                       This file creates a redis DB                         #
 ##############################################################################
 resource "ibm_database" "redis" {
-    resource_group_id            = "7062433cf68d4002baf46488c1c0fb62"
-    name                         = "redis"
+    resource_group_id            = var.resource_group_id
+    name              = var.db_name == "_not_set_" ? "${var.name_prefix}-redis-db-${var.ibm_region}-${var.environment}" : var.db_name
     service                      = "databases-for-redis"
     plan                         = "standard"
-    location                     = "us-south"
+    location                     = var.ibm_region
     service_endpoints            = "public-and-private"
     auto_scaling {
         cpu {
@@ -23,14 +23,8 @@ resource "ibm_database" "redis" {
         }
     }
     members_cpu_allocation_count = 6
-    tags = ["cm", "tf-test"]
+    tags = ["cm", var.environment]
     version = "5"
-}
-
-resource "ibm_resource_key" "cmcred" {
-  name                 = "cm-credentials"
-  resource_instance_id = ibm_database.redis.id
-  role = "Administrator"
 }
 
 provider "ibm" {

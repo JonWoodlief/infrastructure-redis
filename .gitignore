@@ -4,3 +4,4 @@ go.sh
 .history
 **/*.log
 provider.tf
+terraform.tfvars
