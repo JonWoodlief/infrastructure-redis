@@ -6,10 +6,3 @@ ibmcloud cdb deployment-configuration redis '{"configuration":{"maxmemory-policy
 passwd=$(ibmcloud resource service-key-create jon-credential2 --instance-id "$1" --output json | jq -r '.credentials.connection.rediss.authentication.password')
 
 ibmcloud sm secret-create --secret-type username_password --resources $(cat scripts/secret.json | envsubst)
-
-
-# ibmcloud resource service-key-create jon-credential --instance-id "$1"
-#passwd=$(echo "$1" | grep -oE "password\:\S*" | cut -c 10-)
-
-#echo "$passwd" > ex3
-#echo "${1}" > ex
