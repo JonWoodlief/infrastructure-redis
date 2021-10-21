@@ -1,0 +1,6 @@
+go.sh
+**/.terraform**
+**/terraform.tfstate*
+.history
+**/*.log
+provider.tf
