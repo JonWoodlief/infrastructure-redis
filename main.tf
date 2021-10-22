@@ -1,6 +1,6 @@
-resource "null_resource" "script-runner" {
+resource "null_resource" "script-runner2" {
   provisioner "local-exec" {
-    command = "./scripts/icd.sh ${ibm_database.redis.id} ${var.secrets_manager_url} ${ibm_database.redis.name}"
+    command = "${path.root}/scripts/icd.sh ${ibm_database.redis.id} ${var.secrets_manager_url} ${ibm_database.redis.name}"
   }
   depends_on = [ibm_database.redis]
 }
