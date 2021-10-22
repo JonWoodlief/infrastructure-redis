@@ -14,14 +14,6 @@ resource "ibm_database" "redis" {
     plan                         = "standard"
     location                     = var.ibm_region
     service_endpoints            = "public-and-private"
-    auto_scaling {
-        cpu {
-        }
-        disk {
-        }
-        memory {
-        }
-    }
     members_cpu_allocation_count = 6
     tags = ["cm", var.environment]
     version = "5"
